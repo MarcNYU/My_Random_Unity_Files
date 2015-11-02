@@ -5,13 +5,14 @@ public class words : MonoBehaviour {
 	
 	public string current = "title";
 	public string prior = "";
-	public Camera mycamera;
+//	public Camera mycamera;
 	[Header("Audio stuff")]
 	public AudioSource bgm;
 	public AudioClip bgm_background;
 	
 	public AudioSource sfx;
-	public AudioClip sfx_heart;
+	public AudioClip sfx_Build;
+	public AudioClip sfx_Jolt;
 	public AudioClip sfx_siren;
 
 	public string w;
@@ -25,6 +26,7 @@ public class words : MonoBehaviour {
 	private bool hasMoney = false;
 	private bool hasFought = false;
 	private bool unlocked = false;
+	private bool isHurt = false;
 	private bool alarm = false;
 	private int hurt = 5;
 
@@ -43,14 +45,20 @@ public class words : MonoBehaviour {
 		s = "";
 		d = "";
 		int randomizer;
-//		bgm.clip = bgm_win;
-//		if(!bgm.isPlaying)
-//		{
-//			bgm.Play ();
-//		}
+		bgm.clip = bgm_background;
+		if(!bgm.isPlaying)
+		{
+			bgm.Play ();
+		}
 		switch (current) 
 		{
 		case "title":
+			hasKey = false;
+			hasGun = false;
+			hasMoney = false;
+			hasFought = false;
+			unlocked = false;
+			alarm = true;
 			dialog = "Lost_7\n\nBy: SoundVoid (Marcus Williams)\n\n\t\t\tPress the Anykey\n\n\n\n\nAudio: heart beat by klankbeeld, http://www.freesound.org/people/klankbeeld/;\nsiren by guitarguy1985 https://freesound.org/people/guitarguy1985/sounds/58015/;\nMusic by Notch";
 			if (Input.anyKeyDown)
 			{
@@ -88,7 +96,7 @@ public class words : MonoBehaviour {
 		case "trash":
 			randomizer = Random.Range(0,10);
 			Debug.Log (randomizer);
-			if (randomizer >= 5)
+			if (randomizer > 6)
 			{
 				current = "lucky";
 				break;
@@ -100,8 +108,12 @@ public class words : MonoBehaviour {
 			}
 			break;
 		case "unlucky":
-//			sfx.volume = .5f;
-//			sfx.PlayOneShot(sfx_heart);
+			if (!isHurt) 
+			{
+				sfx.volume = .1f;
+				sfx.PlayOneShot(sfx_Jolt);
+				isHurt = true;
+			}
 			dialog = "You reach in but you cut yourself on a rusted nail. I hope it was worth it.\nYou found a key. (s) To go back\n";
 			hasKey = true;
 			hurt += 5;
@@ -135,8 +147,12 @@ public class words : MonoBehaviour {
 			}
 			break;
 		case "shot":
-//			sfx.volume = .5f;
-//			sfx.PlayOneShot(sfx_heart);
+			if (!isHurt) 
+			{
+				sfx.volume = .1f;
+				sfx.PlayOneShot(sfx_Jolt);
+				isHurt = true;
+			}
 			dialog = "Why would you do that do you know how dangerous that was?!\n Well you just shot yourself.\n(s) To go back\n";
 			hasGun = false;
 			w = current;
@@ -153,11 +169,6 @@ public class words : MonoBehaviour {
 			d = current;
 			break;
 		case "corner":
-//			if (alarm == true) 
-//			{
-//				sfx.volume = .2f;
-//				sfx.PlayOneShot(sfx_siren);
-//			}
 			prior = "corner";
 			dialog = "The sun is almost up, but it's way to dark to make out the street.\n The street light above you seems busted, although you do see a pawnshop \nacross the street.\n(w) Go to pawn-shop\n(a or d) To explore\n(s) To go back\n";
 			w = "store";
@@ -166,11 +177,6 @@ public class words : MonoBehaviour {
 			d = a;
 			break;
 		case "store":
-//			if (alarm == true) 
-//			{
-//				sfx.volume = .4f;
-//				sfx.PlayOneShot(sfx_siren);
-//			}
 			dialog = "The shop is closed but you can see the street a little better from here.\n(w) Examin the shop\n(a or d) To explore\n(s) To go back\n";
 			if (prior == "unlocked") 
 			{
@@ -186,11 +192,6 @@ public class words : MonoBehaviour {
 			prior = "store";
 			break;
 		case "street":
-//			if (alarm == true) 
-//			{
-//				sfx.volume = .2f;
-//				sfx.PlayOneShot(sfx_siren);
-//			}
 			if (prior == "corner") {
 				dialog = "You can't really see anything\n(a) Risk the darkness\n(d) Risk the darkness\n(s) To go back\n";
 			} else if (prior == "store") {
@@ -271,8 +272,12 @@ public class words : MonoBehaviour {
 			d = current;
 			break;
 		case "alarm":
-//			sfx.volume = .5f;
-//			sfx.PlayOneShot(sfx_siren);
+			if (!alarm) 
+			{
+				sfx.volume = .2f;
+				sfx.PlayOneShot(sfx_siren);
+				alarm = true;
+			}
 			dialog = "You trigger the alarm a red light blares above you and sirens echo out.\n(s) Runaway\n";
 			w = current;
 			a = current;
@@ -369,18 +374,13 @@ public class words : MonoBehaviour {
 			prior = "new";
 			break;
 		case "read":
-			dialog = "You read the article and realize it's about you...\n‘Sara Withers missing. Last seen driving a silver sedan off Route 40, 7 years ago.\nLocal officers claim said sedan, crashed across the street form 'Luckies’\n Pawnshop'then said person, as described by local eye witnesses, climbed out of said vehicle\n in a panicked state. Ms. Withers apparently then disappeared into the back ally never to be seen again.\nSurprisingly only a few minutes later did Little Rock suffer from a nuclear flash.\n Whipping out 87.6 percent of the city's population.\nOrigin of explosion unknown...'\nTrue ending\tPress Any Key to Continue";
+			dialog = "You read the article and realize it's about you...\n‘Sara Withers missing. Last seen driving a silver sedan off Route 40, 7 years ago.\nLocal officers claim said sedan, crashed across the street form 'Luckies’\n Pawnshop'then said person, as described by local eye witnesses, climbed\n out of said vehicle in a panicked state. Ms. Withers apparently then disappeared\n into the back ally never to be seen again. Surprisingly only a few minutes later\n did Little Rock suffer from a nuclear flash. Whipping out 87.6 percent of the city's\npopulation. Origin of explosion unknown...'\nTrue ending\tPress Any Key to Continue";
 			if (Input.anyKeyDown)
 			{
 				current = "End";
 			}
 			break;
 		case "station":
-//			if (alarm == true) 
-//			{
-//				sfx.volume = .1f;
-//				sfx.PlayOneShot(sfx_siren);
-//			}
 			prior = "station";
 			dialog = "Your a few blocks away from the police station now.\n You also see a bum on the street.\n(w) Go to station\n(d) Head towards the bum\n(s) To go back to pawn shop\n";
 			w = "outside station";
@@ -425,8 +425,12 @@ public class words : MonoBehaviour {
 			}
 			break;
 		case "weapon":
-//			sfx.volume = .2f;
-//			sfx.PlayOneShot(sfx_heart);
+			if (!isHurt) 
+			{
+				sfx.volume = .1f;
+				sfx.PlayOneShot(sfx_Build);
+				isHurt = true;
+			}
 			dialog = "You examined the gun and notice it only has one bullet left.\n You holster the gun to your back.\n(s) Continue";
 			hasGun = true;
 			w = current;
@@ -524,6 +528,12 @@ public class words : MonoBehaviour {
 			{
 				if (hurt > 30)
 				{
+					if (!isHurt) 
+					{
+						sfx.volume = .1f;
+						sfx.PlayOneShot(sfx_Jolt);
+						isHurt = true;
+					}
 					dialog = "You were too badly injured and lost the fight.\n Bad ending.\n(s) Continue\n";
 					s = "lost";
 					hasGun = false;
@@ -561,6 +571,12 @@ public class words : MonoBehaviour {
 			Debug.Log (randomizer);
 			if (hurt > 30)
 			{
+				if (!isHurt) 
+				{
+					sfx.volume = .1f;
+					sfx.PlayOneShot(sfx_Jolt);
+					isHurt = true;
+				}
 				dialog = "You were too badly injured and lost the fight.\n Bad ending.\n(s) Continue\n";
 				s = "lost";
 				hasGun = false;
@@ -593,8 +609,12 @@ public class words : MonoBehaviour {
 			}	
 			break;
 		case "kill":
-//			sfx.volume = .5f;
-//			sfx.PlayOneShot(sfx_heart);
+			if (!isHurt) 
+			{
+				sfx.volume = .1f;
+				sfx.PlayOneShot(sfx_Build);
+				isHurt = true;
+			}
 			dialog = "You killed him... But for what?\n(s) Continue";
 			hasFought = true;
 			hasGun = false;
@@ -604,8 +624,12 @@ public class words : MonoBehaviour {
 			d = current;
 			break;
 		case "won":
-//			sfx.volume = .5f;
-//			sfx.PlayOneShot(sfx_heart);
+			if (!isHurt) 
+			{
+				sfx.volume = .1f;
+				sfx.PlayOneShot(sfx_Jolt);
+				isHurt = true;
+			}
 			dialog = "You barely made out.\n You knocked him unconcious and stole the cash box.\n(s) Continue\n";
 			w = current;
 			a = current;
@@ -650,7 +674,13 @@ public class words : MonoBehaviour {
 			d = current;
 			break;
 		case "darkness":
-			dialog = "You break out into a sprint only to be tagged by a bullet.\n You drop to the floor bleeding out. A squad of soilders converge on your location\nand captured you. You never learned the truth. Lost ending.\n Press Any Key to Continue";
+			if (!isHurt) 
+			{
+				sfx.volume = .1f;
+				sfx.PlayOneShot(sfx_Build);
+				isHurt = true;
+			}
+			dialog = "You break out into a sprint only to be tagged by a bullet.\n You drop to the floor bleeding out. A squad of soilders converge on your location\nand capture you. You never learned the truth. Lost ending.\n Press Any Key to Continue";
 			hasKey = false;
 			hasGun = false;
 			hasMoney = false;
@@ -660,13 +690,6 @@ public class words : MonoBehaviour {
 				current = "lost";
 			}
 			break;
-//		case "title":
-//			dialog = "Lost_7\n\nBy: SoundVoid (Marcus Williams)\n\n\t\t\tPress the Anykey\n\n\n\n\nAudio: heart beat by klankbeeld, http://www.freesound.org/people/klankbeeld/;\nsiren by guitarguy1985 https://freesound.org/people/guitarguy1985/sounds/58015/;\nMusic by Notch";
-//			if (Input.anyKeyDown)
-//			{
-//				current = "ally";
-//			}
-//			break;
 		case "End":
 			dialog = "The End... So far.";
 			if (Input.anyKeyDown)
