@@ -13,13 +13,13 @@ public class mouse_movement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (Input.GetAxis("Mouse X") != 0) 
+		if (Input.GetAxis("Mouse X") > 1 || Input.GetAxis("Mouse X") < 1 ) 
 		{
 			transform.Rotate(transform.up, Input.GetAxis("Mouse X") *  x_sensitivity);
 		}
-		if (Input.GetAxis("Mouse Y") != 0) 
+		if (Input.GetAxis("Mouse Y") > 1 || Input.GetAxis("Mouse Y") < 1) 
 		{
-			transform.Rotate(transform.right, Input.GetAxis("Mouse Y") * y_sensitivity);
+			transform.Rotate(transform.right, -Input.GetAxis("Mouse Y") * y_sensitivity);
 		}
 	
 	}

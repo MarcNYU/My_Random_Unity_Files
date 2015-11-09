@@ -71,14 +71,14 @@ public class text : MonoBehaviour {
 			}
 			break;
 		case "ally":
-			dialog = "You wake up in an ally way.\nThere's a sharp pain in your side,\nyou're freezing and the world is spinning.\npress (w) to continue";
+			dialog = "You wake up in an alley way.\nThere's a sharp pain in your side,\nyou're freezing and the world is spinning.\npress (w) to continue";
 			w = "lost";
 			a = current;
 			s = current;
 			d = current;
 			break;
 		case "lost":
-			dialog = "You look around but you don't see much.\nThere's a few dumpsters to your left\nand a broken beer bottle to your right\n(w) Leave ally\n(a) Check dumpsters\n";
+			dialog = "You look around but you don't see much.\nThere's a few dumpsters to your left\nand a broken beer bottle to your right\n(w) Leave alley\n(a) Check dumpsters\n";
 			w = "corner";
 			a = "dumpster";
 			s = current;
