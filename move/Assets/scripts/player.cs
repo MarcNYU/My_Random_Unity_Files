@@ -31,7 +31,7 @@ public class player : MonoBehaviour {
 	}
 	void Shoot(){
 
-//		bullet newBullet = Instantiate (bullet, transform.position + transform.forward, Quaternion.identity);
-//		newBullet.direction = transform.forward * Time.deltaTime * bulletSpeed;
+		bullet newBullet = (bullet) Instantiate (b, transform.position + transform.forward, Quaternion.identity);
+		newBullet.dir = transform.forward * Time.deltaTime * bulletSpeed;
 	}
 }

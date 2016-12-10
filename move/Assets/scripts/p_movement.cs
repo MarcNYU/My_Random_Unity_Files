@@ -2,31 +2,70 @@
 using System.Collections;
 
 public class p_movement : MonoBehaviour {
-
-//	public Vector3 go;
-	public float moveSpeed;
+	private Rigidbody rb;
+	public float driveSpeed;
+	public float jumpStrength;
+	
+	public bool grounded = false;
+	
 	// Use this for initialization
 	void Start () {
-	
+		
+		rb = GetComponent<Rigidbody>();
+		
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W))
+		
+		if (Input.GetKey (KeyCode.A))
 		{
-			transform.position += transform.forward * Time.deltaTime * moveSpeed;
+			transform.RotateAround(transform.position, transform.up, -5);
 		}
-		else if(Input.GetKey (KeyCode.LeftArrow) || Input.GetKey (KeyCode.A))
+		if (Input.GetKey (KeyCode.D))
 		{
-			transform.position -= transform.right * Time.deltaTime * moveSpeed;
+			transform.RotateAround(transform.position, transform.up, 5);
 		}
-		else if(Input.GetKey (KeyCode.DownArrow) || Input.GetKey (KeyCode.S))
+		
+	}
+	
+	void OnCollisionStay(Collision col)
+	{
+		if (col.collider.tag == "Ground")
 		{
-			transform.position -= transform.forward * Time.deltaTime * moveSpeed;
-		}
-		else if(Input.GetKey (KeyCode.RightArrow) || Input.GetKey (KeyCode.D))
-		{
-			transform.position += transform.right * Time.deltaTime * moveSpeed;
+			grounded = true;
 		}
 	}
+	
+	void OnCollisionExit(Collision col)
+	{
+		if (col.collider.tag == "Ground")
+		{
+			grounded = false;
+		}
+	}
+	
+	//FixedUpdate is called once per physics step
+	void FixedUpdate()
+	{
+		
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			if (grounded)
+			{
+				rb.AddForce(transform.up * jumpStrength, ForceMode.VelocityChange);
+			}
+		}
+		
+		if (Input.GetKey(KeyCode.W))
+		{
+			Debug.Log("up");
+			//normally we'd just move the transform
+			//transform.position += transform.forward
+			
+			//instead we're going add a force to our rigid body
+			rb.AddForce(transform.forward * driveSpeed);
+		}
+	}
+
 }

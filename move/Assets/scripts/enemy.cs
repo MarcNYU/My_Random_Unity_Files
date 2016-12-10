@@ -15,7 +15,7 @@ public class enemy : MonoBehaviour {
 	void Update () {
 
 	
-		transform.rotation = Quaternion.LookRotation (target.position - transform.position);
+		transform.rotation = Quaternion.LookRotation (target.transform.forward);
 
 		transform.position += transform.forward * Time.deltaTime * moveSpeed;
 	}
